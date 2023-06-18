@@ -1,7 +1,9 @@
 const path = require('path')
 const mkdirp = require('mkdirp')
 const sd = require("silly-datetime")
-export default function FileUploader() {
+const multer = require('multer')
+const FileUploader = function () {
+
     this.getUpload = function (file) {
         const storage = multer.diskStorage({
             destination: async function (req, file, cb) {
@@ -27,3 +29,4 @@ export default function FileUploader() {
       return  multer({ storage: storage })
     }
 }
+module.exports = new FileUploader();

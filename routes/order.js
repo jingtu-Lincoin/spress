@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var DBUtil = require('../util/DBUtil');
+var DBUtil = require('../app/util/DBUtil');
+var TimeUtil = require('../app/util/TimeUtil');
+var BaseUtil = require('../app/util/BaseUtil');
 
 /* GET users listing. */
 router.get('/getList', function(req, res, next) {
@@ -32,8 +34,26 @@ router.post('/add', function(req, res, next) {
   const tel = req.body.tel;
   const name = req.body.name;
   const imagePath = req.body.imagePath;
-    const sql = `insert into order_list (tel,name,imagePath) values ('${tel}','${name}','${imagePath}')`;
+  const ctime = TimeUtil.getNowTime();
+  const sn = BaseUtil.getRandomString(32);
+  const sql = `insert into order_list (tel,name,imagePath,ctime,sn) values ('${tel}','${name}','${imagePath}','${ctime}','${sn}')`;
   const db = DBUtil.getDB();
+    db.query(sql, function (err, rows) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        res.json({
+            code: 200,
+            data: rows
+        });
+    });
+});
+
+router.post('/getUserOrders', function(req, res, next) {
+    const tel = req.body.tel;
+    const sql = `select * from t_order where tel='${tel}'`;
+    const db = DBUtil.getDB();
     db.query(sql, function (err, rows) {
         if (err) {
             console.log(err);

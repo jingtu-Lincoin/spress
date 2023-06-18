@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <script src="/javascripts/jquery-3.7.0.min.js.js"></script>
+    <title>我的订单</title>
+</head>
+<body>
+    <div>
+        <div class="border-gray-300">
+            <p>请填写拼多多下单时收件人的姓名和电话</p>
+            <input type="text" name="name" placeholder="请填写下单人姓名">
+            <input type="text" name="tel" placeholder="请填写下单人电话">
+            <button id="submit">开始上传照片</button>
+        </div>
+    </div>
+
+</body>
+</html>
