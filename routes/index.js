@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var FileUploader = require('../app/util/FileUploader');
 var upload = FileUploader.getUpload()
+var BaseUtil = require('../app/util/BaseUtil');
+var DBUtil = require('../app/util/DBUtil');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -9,14 +11,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/userOrders', function(req, res, next) {
-  res.render('userOrders');
+  res.render('userOrders',{title:'用户订单'});
 });
-
-router.post("/file/upload", upload.single('file'), (req, res) => {
-  const { body, file } = req
-  res.json({code: 200, data: file.path});
-})
-
-
 
 module.exports = router;

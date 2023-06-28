@@ -4,18 +4,94 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/stylesheets/style.css" rel="stylesheet">
-    <script src="/javascripts/jquery-3.7.0.min.js.js"></script>
+    <script src="/public/javascripts/jquery-3.7.0.min.js"></script>
     <title>我的订单</title>
 </head>
 <body>
-    <div>
-        <div class="border-gray-300">
-            <p>请填写拼多多下单时收件人的姓名和电话</p>
-            <input type="text" name="name" placeholder="请填写下单人姓名">
-            <input type="text" name="tel" placeholder="请填写下单人电话">
-            <button id="submit">开始上传照片</button>
+<div class="w-full h-screen">
+<div class="w-full h-full flex flex-col">
+    <div class="bg-fuchsia-800">
+        <div class="pt-16 pl-5 pr-5 ">
+            <p class="text-amber-50">请填写拼多多下单时收件人的姓名和电话</p>
+            <div class="flex flex-col items-center justify-center w-full  mt-5">
+                <div class="flex flex-col items-center justify-center w-full h-12">
+                    <input type="text" id="name" name="name" placeholder="请输入拼多多下单用户名" class="w-5/6 h-2/3  rounded-lg pl-2" >
+                </div>
+                <div class="flex flex-col items-center justify-center w-full h-12 mt-5">
+                    <input type="text" id="tel" name="tel" placeholder="请输入拼多多下单手机号" class="w-5/6 h-2/3 rounded-lg pl-2">
+                </div>
+                <button type="button" onclick="queryUserOrder()" class="w-5/6 h-12 bg-amber-500 rounded-lg mt-5 text-amber-50 font-bold">查看您的订单</button>
+            </div>
+        </div>
+        <div class="flex-1 mt-10 pt-10 bg-fuchsia-950 pl-5 pr-5 text-amber-50 h-full">
+            <div id="orderDiv">
+
+            </div>
         </div>
     </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        console.log("ready!");
+        initData();
+    });
+
+    function initData(){
+        var datas = {{orders}}+"";
+        console.log(datas);
+        if(datas.length > 0){
+            createOrderDivs(datas);
+        }
+    }
+
+    function createOrderDivs(datas){
+        var orderDiv = $("#orderDiv");
+        var orderDivs = "";
+        for(var i = 0; i < datas.length; i++){
+            var data = datas[i];
+            var orderDiv = '<div class="bg-fuchsia-800 rounded-xl p-5 mt-5">'+
+                                '<p class="mt-5">订单编号:'+data.orderId+'</p>'+
+                                '<p class="mt-5">用户姓名:'+data.name+'</p>'+
+                                '<p class="mt-5">用户电话:'+data.tel+'</p>'+
+                                '<img src="'+data.image+'" class="w-40 h-40 mt-5" />'+
+                            '</div>';
+            orderDivs += orderDiv;
+        }
+        $("#orderDiv").html(orderDivs);
+    }
+
+
+
+    function queryUserOrder(){
+        var name = $("#name").val();
+        var tel = $("#tel").val();
+        if(name == null || name == "" || tel == null || tel == ""){
+            alert("请输入拼多多下单时的用户名和手机号");
+            return;
+        }
+        $.ajax({
+            url: "/order/getUserOrders",
+            type: "post",
+            data: {
+                name: name,
+                tel: tel
+            },
+            success: function (data) {
+                console.log(data);
+                if(data.code == 200){
+                    createOrderDivs(data.data);
+                }else{
+                    alert("查询失败");
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                alert("查询失败");
+            }
+        });
+    }
+</script>
 
 </body>
 </html>

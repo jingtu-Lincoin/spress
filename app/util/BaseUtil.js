@@ -9,5 +9,20 @@ const BaseUtil = function (){
         }
         return pwd;
     }
+
+    /**
+     * 解决multer文件path路径问题
+     * @param path
+     * @return {*}
+     */
+    this.getFilePath = function (path) {
+        if(path){
+            path = path.replace("public","public\\");
+            path = path.replace("uploads","uploads\\");
+            path = path.replace("file","\\file");
+        }
+        return path;
+    }
+
 }
 module.exports = new BaseUtil();
