@@ -2,9 +2,9 @@ const mysql = require('mysql')
 const DBUtil = function (){
     this.getDB = function(){
        return  mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'pass',
+            host: '47.117.114.43',
+            user: 'minishop',
+            password: 'minishop',
             database: 'minishop'
         })
     }
