@@ -27,10 +27,15 @@ router.post('/getList', function(req, res, next) {
                 console.log(err);
                 return;
             }
+            const pageObj = {
+                list: rows,
+                pageCount: Math.ceil(rows2[0].total / pageSize),
+                pageSize: pageSize,
+                page: page
+            }
             res.json({
                 code: 200,
-                data: rows,
-                total: rows2[0].total
+                data: pageObj,
             });
         });
     });
@@ -76,7 +81,7 @@ router.post("/file/upload", upload.single('file'), (req, res) => {
     const { body, file } = req;
     const tel = body.tel;
     const name = body.name;
-    const image = req.hostname + ":" + req.socket.localPort + "/" + BaseUtil.getFilePath(file.path);
+    const image = "http://"+ req.hostname + ":" + req.socket.localPort + "/" + BaseUtil.getFilePath(file.path);
     const ctime = TimeUtil.getNowTime();
     const sn = BaseUtil.getRandomString(32);
     const sql = `insert into t_order (tel,name,image,ctime,sn) values ('${tel}','${name}','${image}','${ctime}','${sn}')`;
