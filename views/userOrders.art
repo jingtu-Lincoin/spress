@@ -82,12 +82,12 @@
                 if(data.code == 200){
                     createOrderDivs(data.data);
                 }else{
-                    alert("查询失败");
+                    alert("订单数据失败");
                 }
             },
             error: function (err) {
                 console.log(err);
-                alert("查询失败");
+                alert("订单数据失败");
             }
         });
     }
